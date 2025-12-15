@@ -1,5 +1,11 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+
+mongoose
+    .connect('mongodb+srv://admin:admin@cluster0.2nesaik.mongodb.net/?appName=Cluster0')
+    .then(() => console.log('DB ok'))
+    .catch((err)=> console.log('DB error', err));
 
 const app = express();
 
@@ -16,7 +22,7 @@ app.post('/auth/login', (req, res) => {
         email: req.body.email,
         fullName: 'Вася Пупкин',
     },
-     'secret123',
+        'secret123',
     );
 
     res.json({
