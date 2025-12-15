@@ -1,8 +1,9 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import { validationResult } from 'express-validator';
 
-import {registerValidator} from './validations.auth.js'
+import {registerValidation} from './validations.auth.js'
 
 mongoose
     .connect('mongodb+srv://admin:admin@cluster0.2nesaik.mongodb.net/?appName=Cluster0')
@@ -17,8 +18,14 @@ app.use(express.json());
 //     res.send('Hello World!');
 // });
 
-app.post('/auth/register', (req, res) => {
-
+app.post('/auth/register', registerValidation, (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json(errors.array())
+    }
+    res.json({
+        success: true,
+    });
     // console.log(req.body);
 
     // const token = jwt.sign({
